@@ -2,13 +2,19 @@ package com.gateway.web.cwservices.model;
 
 import com.gateway.web.cwservices.modelaggr.CreateClientRequest;
 import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.util.UUID;
 
 @Data
+@Accessors(chain = true)
 public class WalletRequest {
 
-    public String foo;
+    Integer balance;
+    UUID uuid;
 
-    public WalletRequest(CreateClientRequest CreateClientRequest) {
-        foo = null;
+    public WalletRequest(CreateClientRequest createClientRequest) {
+        this.balance = createClientRequest.getBalance();
+        this.uuid = createClientRequest.getUuid();
     }
 }

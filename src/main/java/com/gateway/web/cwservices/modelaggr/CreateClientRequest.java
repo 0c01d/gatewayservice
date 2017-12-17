@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.UUID;
+
 @Data
 @Accessors(chain = true)
 @NoArgsConstructor
@@ -18,4 +20,6 @@ public class CreateClientRequest {
     private String gender;
     private String dateOfBirth;
     private String nickname;
+    private Integer balance;
+    private UUID uuid;
 }
