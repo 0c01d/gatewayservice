@@ -11,21 +11,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProfileRequest {
-    private String firstname;
-    private String middlename;
-    private String lastname;
     private String email;
-    private String phone;
-    private String gender;
-    private String dateOfBirth;
+    private String phoneNumber;
 
     public ProfileRequest(CreateClientRequest CreateClientRequest) {
-        this.firstname = CreateClientRequest.getFirstname();
-        this.middlename = CreateClientRequest.getMiddlename();
-        this.lastname = CreateClientRequest.getLastname();
         this.email = CreateClientRequest.getEmail();
-        this.phone = CreateClientRequest.getPhone();
-        this.gender = CreateClientRequest.getGender();
-        this.dateOfBirth = CreateClientRequest.getDateOfBirth();
+        this.phoneNumber = CreateClientRequest.getPhoneNumber();
     }
 }

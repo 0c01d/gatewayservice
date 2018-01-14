@@ -19,7 +19,7 @@ public class NCNResponse {
     private String comment;
     private String name;
 
-    public NCNResponse(ChatNewsResponse chatNewsResponse, AccountResponse accountResponse, NewsResponse newsResponse) {
+    public NCNResponse(AccountResponse accountResponse, NewsResponse newsResponse, ChatNewsResponse chatNewsResponse) {
         this.id = chatNewsResponse.getId();
         this.comment = chatNewsResponse.getComment();
         /*this.name = chatNewsResponse.getName();

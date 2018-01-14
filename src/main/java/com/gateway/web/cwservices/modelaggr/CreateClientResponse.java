@@ -16,13 +16,8 @@ import java.util.UUID;
 @Data
 public class CreateClientResponse {
     private Integer profileId;
-    private String firstname;
-    private String middlename;
-    private String lastname;
     private String email;
-    private String phone;
-    private String gender;
-    private String dateOfBirth;
+    private String phoneNumber;
 
     private UUID walletUUID;
     private Integer balance;
@@ -37,13 +32,8 @@ public class CreateClientResponse {
         this.balance = walletResponse.getBalance();
 
         this.profileId = profileResponse.getId();
-        this.firstname = profileResponse.getFirstname();
-        this.middlename = profileResponse.getMiddlename();
-        this.lastname = profileResponse.getLastname();
         this.email = profileResponse.getEmail();
-        this.phone = profileResponse.getPhone();
-        this.gender = profileResponse.getGender();
-        this.dateOfBirth =profileResponse.getDateOfBirth();
+        this.phoneNumber = profileResponse.getPhoneNumber();
 
         this.accountId = accountResponse.getId();
         this.nickname = accountResponse.getNickname();

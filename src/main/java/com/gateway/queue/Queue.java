@@ -1,14 +1,16 @@
-package com.gateway;
+package com.gateway.queue;
 
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Supplier;
 
+@SuppressWarnings("InfiniteLoopStatement")
 @Component
 public class Queue implements Runnable {
 
     private LinkedBlockingQueue<Supplier<Boolean>> queue = new LinkedBlockingQueue<>();
+
 
     public void run() {
         while (true) {
@@ -17,7 +19,7 @@ public class Queue implements Runnable {
                 if (!f.get()) {
                     queue.put(f);
                 }
-                Thread.sleep(500);
+                Thread.sleep(400);
             }
             catch (InterruptedException ignored) {
                 Thread.currentThread().interrupt();
