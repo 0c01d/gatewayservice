@@ -1,24 +1,32 @@
 package com.gateway.interconnect;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import javax.xml.bind.DatatypeConverter;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AuthRequest<Body, Response> {
+public abstract class AuthRequest {
     final Credentials credentials;
     final String url;
     final Map<String, Object> query;
-    final Body body;
+    StringBuilder tokenContainer;
+    Map<String, String> tokenHeader;
 
-    public abstract Response send() throws UnirestException;
+    public void setTokenContainer(StringBuilder tokenContainer) {
+        this.tokenContainer = tokenContainer;
+        tokenHeader.put("Auth-Token", tokenContainer.toString());
+    }
 
-    AuthRequest(Credentials credentials, String url, Map<String, Object> query, Body body) {
+    public abstract HttpResponse<JsonNode> send() throws UnirestException;
+
+    AuthRequest(Credentials credentials, String url, Map<String, Object> query) {
         this.credentials = credentials;
         this.url = url;
         this.query = query;
-        this.body = body;
+        this.tokenHeader = new HashMap<>();
     }
 
     public static final class Credentials {
@@ -28,7 +36,7 @@ public abstract class AuthRequest<Body, Response> {
         public Map<String, String> getBasicAuthHeader() {
             String credentials = id.toString() + ":" + secret;
             Map<String, String> authorization = new HashMap<>();
-            authorization.put("Authorization", DatatypeConverter.printBase64Binary(credentials.getBytes()));
+            authorization.put("Authorization", "Basic " + DatatypeConverter.printBase64Binary(credentials.getBytes()));
             return authorization;
         }
 
@@ -39,11 +47,10 @@ public abstract class AuthRequest<Body, Response> {
     }
 
 
-    public static abstract class Builder<Body, Response> {
+    public static abstract class Builder {
         Credentials credentials;
         String url;
         Map<String, Object> query;
-        Body body;
 
         Builder() {
         }
@@ -60,11 +67,6 @@ public abstract class AuthRequest<Body, Response> {
 
         public Builder setQuery(Map<String, Object> query) {
             this.query = query;
-            return this;
-        }
-
-        public Builder setBody(Body body) {
-            this.body = body;
             return this;
         }
 

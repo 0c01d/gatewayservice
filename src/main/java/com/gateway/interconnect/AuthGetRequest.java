@@ -5,38 +5,47 @@ import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import java.util.HashMap;
 import java.util.Map;
 
-public class AuthGetRequest<Body, Response> extends AuthRequest<Body, Response> {
+public class AuthGetRequest extends AuthRequest {
     private AuthGetRequest(AuthRequest.Credentials credentials,
                            String url,
-                           Map<String, Object> query,
-                           Body body) {
-        super(credentials, url, query, body);
+                           Map<String, Object> query) {
+        super(credentials, url, query);
     }
 
     @Override
-    public Response send() throws UnirestException {
+    public HttpResponse<JsonNode> send() throws UnirestException {
         HttpResponse<JsonNode> jsonResponse = Unirest.get(this.url)
-                .headers(credentials.getBasicAuthHeader())
-                .queryString(query)
+                .headers(tokenHeader)
+                .queryString(query != null ? query : new HashMap<>())
                 .asJson();
-        return null;
+        if (jsonResponse.getStatus() == 401) {
+            HttpResponse<JsonNode> jsonAuthResponse = Unirest.get(this.url)
+                    .headers(credentials.getBasicAuthHeader())
+                    .queryString(query != null ? query : new HashMap<>())
+                    .asJson();
+            this.tokenContainer.replace(0, tokenContainer.length(),
+                    jsonAuthResponse.getHeaders().get("Auth-Token").get(0));
+            return jsonAuthResponse;
+        }
+        return jsonResponse;
     }
 
-    public static class Builder<Body, Response> extends AuthRequest.Builder<Body, Response> {
+    public static class Builder extends AuthRequest.Builder {
 
         private Builder() {
             super();
         }
 
-        public static Builder authGetRequest() {
+        public static Builder request() {
             return new Builder();
         }
 
         @Override
-        public AuthRequest build() {
-            return new AuthGetRequest<>(this.credentials, this.url, this.query, this.body);
+        public AuthGetRequest build() {
+            return new AuthGetRequest(this.credentials, this.url, this.query);
         }
     }
 }
