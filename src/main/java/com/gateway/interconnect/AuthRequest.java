@@ -1,5 +1,6 @@
 package com.gateway.interconnect;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.exceptions.UnirestException;
@@ -20,7 +21,7 @@ public abstract class AuthRequest {
         tokenHeader.put("Auth-Token", tokenContainer.toString());
     }
 
-    public abstract HttpResponse<JsonNode> send() throws UnirestException;
+    public abstract HttpResponse<JsonNode> send() throws UnirestException, JsonProcessingException;
 
     AuthRequest(Credentials credentials, String url, Map<String, Object> query) {
         this.credentials = credentials;

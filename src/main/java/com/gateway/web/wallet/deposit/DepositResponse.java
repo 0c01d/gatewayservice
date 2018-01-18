@@ -10,10 +10,12 @@ public class DepositResponse {
     private final UUID walletUUID;
     private final BigDecimal value;
 
+    public Long getId() {
+        return id;
+    }
     public UUID getWalletUUID() {
         return walletUUID;
     }
-
     public BigDecimal getValue() {
         return value;
     }

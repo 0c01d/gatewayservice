@@ -8,8 +8,8 @@ import com.gateway.interconnect.AuthPostRequest;
 import com.gateway.interconnect.AuthRequest;
 import com.gateway.web.wallet.deposit.DepositRequest;
 import com.gateway.web.wallet.deposit.DepositResponse;
-import com.gateway.web.wallet.payment.PaymentRequest;
-import com.gateway.web.wallet.payment.PaymentResponse;
+import com.gateway.web.wallet.payout.PayoutRequest;
+import com.gateway.web.wallet.payout.PayoutResponse;
 import com.gateway.web.wallet.wallet.WalletResponse;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -56,7 +56,7 @@ public class WalletService {
     }
 
     public void deleteWallet(UUID uuid) throws UnirestException, IOException {
-        AuthGetRequest request = (AuthGetRequest) AuthDeleteRequest.Builder.request()
+        AuthDeleteRequest request = (AuthDeleteRequest) AuthDeleteRequest.Builder.request()
                 .setUrl(this.apiUrl + "/wallet/" + uuid)
                 .setCredentials(credentials)
                 .build();
@@ -67,7 +67,7 @@ public class WalletService {
     public DepositResponse createDeposit(DepositRequest depositRequest) throws UnirestException, IOException {
         AuthPostRequest request = (AuthPostRequest) AuthPostRequest.Builder.request()
                 .setBody(objectMapper.writeValueAsString(depositRequest))
-                .setUrl(this.apiUrl + "/deposit")
+                .setUrl(this.apiUrl + "/deposit/")
                 .setCredentials(credentials)
                 .build();
         request.setTokenContainer(tokenContainer);
@@ -80,7 +80,7 @@ public class WalletService {
         query.put("page", page != null ? page : 0);
         query.put("size", size != null ? size : 5);
         AuthGetRequest request = (AuthGetRequest) AuthGetRequest.Builder.request()
-                .setUrl(this.apiUrl + "/deposit" + uuid)
+                .setUrl(this.apiUrl + "/deposit/" + uuid)
                 .setQuery(query)
                 .setCredentials(credentials)
                 .build();
@@ -90,29 +90,29 @@ public class WalletService {
                 new TypeReference<List<DepositResponse>>(){});
     }
 
-    public PaymentResponse createPayment(PaymentRequest paymentRequest) throws UnirestException, IOException {
+    public PayoutResponse createPayout(PayoutRequest payoutRequest) throws UnirestException, IOException {
         AuthPostRequest request = (AuthPostRequest) AuthPostRequest.Builder.request()
-                .setBody(objectMapper.writeValueAsString(paymentRequest))
-                .setUrl(this.apiUrl + "/payment")
+                .setBody(objectMapper.writeValueAsString(payoutRequest))
+                .setUrl(this.apiUrl + "/payout/")
                 .setCredentials(credentials)
                 .build();
         request.setTokenContainer(tokenContainer);
         HttpResponse<JsonNode> response = request.send();
-        return objectMapper.readValue(response.getBody().getObject().toString(), PaymentResponse.class);
+        return objectMapper.readValue(response.getBody().getObject().toString(), PayoutResponse.class);
     }
 
-    public List<PaymentResponse> getPayments(UUID uuid, Integer page, Integer size) throws UnirestException, IOException {
+    public List<PayoutResponse> getPayouts(UUID uuid, Integer page, Integer size) throws UnirestException, IOException {
         Map<String, Object> query = new HashMap<>();
         query.put("page", page != null ? page : 0);
         query.put("size", size != null ? size : 5);
         AuthGetRequest request = (AuthGetRequest) AuthGetRequest.Builder.request()
-                .setUrl(this.apiUrl + "/payment" + uuid)
+                .setUrl(this.apiUrl + "/payout/" + uuid)
                 .setQuery(query)
                 .setCredentials(credentials)
                 .build();
         request.setTokenContainer(tokenContainer);
         HttpResponse<JsonNode> response = request.send();
         return objectMapper.readValue(response.getBody().getArray().toString(),
-                new TypeReference<List<PaymentResponse>>(){});
+                new TypeReference<List<PayoutResponse>>(){});
     }
 }

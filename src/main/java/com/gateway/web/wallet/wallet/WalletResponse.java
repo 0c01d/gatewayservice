@@ -17,7 +17,8 @@ public class WalletResponse {
         return balance;
     }
 
-    public WalletResponse(@JsonProperty("uuid") UUID uuid, @JsonProperty("balance") BigDecimal balance) {
+    public WalletResponse(@JsonProperty("walletUUID") UUID uuid,
+                          @JsonProperty("value") BigDecimal balance) {
         this.uuid = uuid;
         this.balance = balance;
     }

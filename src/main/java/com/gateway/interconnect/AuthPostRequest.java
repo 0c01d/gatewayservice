@@ -1,5 +1,8 @@
 package com.gateway.interconnect;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gateway.web.wallet.deposit.DepositRequest;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -7,8 +10,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AuthPostRequest extends AuthRequest {
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final String body;
 
     private AuthPostRequest(AuthRequest.Credentials credentials,
