@@ -6,20 +6,19 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 public class WalletResponse {
-    private final UUID uuid;
+    private final UUID walletUUID;
     private final BigDecimal balance;
 
-    public UUID getUuid() {
-        return uuid;
+    public UUID getWalletUUID() {
+        return walletUUID;
     }
-
     public BigDecimal getBalance() {
         return balance;
     }
 
-    public WalletResponse(@JsonProperty("walletUUID") UUID uuid,
+    public WalletResponse(@JsonProperty("walletUUID") UUID walletUUID,
                           @JsonProperty("value") BigDecimal balance) {
-        this.uuid = uuid;
+        this.walletUUID = walletUUID;
         this.balance = balance;
     }
 }

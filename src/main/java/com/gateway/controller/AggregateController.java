@@ -1,6 +1,15 @@
 package com.gateway.controller;
 
+import com.gateway.service.AggregateService;
+import com.gateway.service.ClientService;
 import com.gateway.service.WalletService;
+import com.gateway.web.aggregate.AccountResponse;
+import com.gateway.web.aggregate.CreateClientRequest;
+import com.gateway.web.aggregate.CreateClientResponse;
+import com.gateway.web.client.extendedprofile.ExtendedProfileRequest;
+import com.gateway.web.client.extendedprofile.ExtendedProfileResponse;
+import com.gateway.web.client.profile.ProfileRequest;
+import com.gateway.web.client.profile.ProfileResponse;
 import com.gateway.web.wallet.deposit.DepositRequest;
 import com.gateway.web.wallet.deposit.DepositResponse;
 import com.gateway.web.wallet.payout.PayoutRequest;
@@ -21,10 +30,14 @@ import java.util.UUID;
 public class AggregateController {
 
     private final WalletService walletService;
+    private final ClientService clientService;
+    private final AggregateService aggregateService;
 
     @Autowired
-    public AggregateController(WalletService walletService) {
+    public AggregateController(WalletService walletService, ClientService clientService, AggregateService aggregateService) {
         this.walletService = walletService;
+        this.clientService = clientService;
+        this.aggregateService = aggregateService;
     }
 
 
@@ -69,6 +82,63 @@ public class AggregateController {
                                                       @RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "size", required = false) Integer size) throws UnirestException, IOException {
         return walletService.getPayouts(uuid, page, size );
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/profile/", method = RequestMethod.POST)
+    public ProfileResponse createProfile(@RequestBody ProfileRequest profileRequest) throws UnirestException, IOException {
+        return clientService.createProfile(profileRequest);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.PATCH)
+    public ProfileResponse patchProfile(@PathVariable("id") Long id, @RequestBody ProfileRequest profileRequest) throws UnirestException, IOException {
+        return clientService.patchProfile(profileRequest, id);
+    }
+
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.GET)
+    public ProfileResponse getProfile(@PathVariable("id") Long id) throws UnirestException, IOException {
+        return clientService.getProfile(id);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/profile/{id}", method = RequestMethod.DELETE)
+    public void deleteProfile(@PathVariable("id") Long id) throws UnirestException, IOException {
+        clientService.deleteProfile(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/profile/extended/", method = RequestMethod.POST)
+    public ExtendedProfileResponse createExtendedProfile(@RequestBody ExtendedProfileRequest extendedProfileRequest) throws UnirestException, IOException {
+        return clientService.createExtendedProfile(extendedProfileRequest);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/profile/extended/", method = RequestMethod.PATCH)
+    public ExtendedProfileResponse patchExtendedProfile(@PathVariable("id") Long id,@RequestBody ExtendedProfileRequest extendedProfileRequest) throws UnirestException, IOException {
+        return clientService.patchExtendedProfile(extendedProfileRequest, id);
+    }
+
+    @RequestMapping(value = "/profile/extended/{id}", method = RequestMethod.GET)
+    public ExtendedProfileResponse getExtendedProfile(@PathVariable("id") Long id) throws UnirestException, IOException {
+        return clientService.getExtendedProfile(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(value = "/aggr/profile/", method = RequestMethod.POST)
+    public CreateClientResponse aggrCreateClient(@RequestBody CreateClientRequest createClientRequest) throws UnirestException, IOException {
+        return aggregateService.aggrCreateClient(createClientRequest);
+    }
+
+    @RequestMapping(value = "/account/{id}", method = RequestMethod.GET)
+    public List<AccountResponse> getAccount(@PathVariable("id") Long id) throws IOException, UnirestException {
+        return aggregateService.getAccount(id);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequestMapping(value = "/client/{id}", method = RequestMethod.DELETE)
+    public void deleteClient(@PathVariable("id") Long id) throws IOException, UnirestException {
+        aggregateService.deleteClient(id);
     }
 
 }

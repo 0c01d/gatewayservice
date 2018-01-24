@@ -37,7 +37,7 @@ public class WalletService {
 
     public WalletResponse createWallet() throws UnirestException, IOException {
         AuthPostRequest request = (AuthPostRequest) AuthPostRequest.Builder.request()
-                .setUrl(this.apiUrl + "/wallet")
+                .setUrl(this.apiUrl + "/wallet/")
                 .setCredentials(credentials)
                 .build();
         request.setTokenContainer(tokenContainer);

@@ -42,6 +42,7 @@ ext.springVersion = '5.0.1.RELEASE'
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-data-rest')
     compile("com.fasterxml.jackson.core:jackson-core:${jacksonCoreVersion}")
 
@@ -52,6 +53,8 @@ dependencies {
     compile('org.json:json:20140107')
 
     compile('javax.xml.bind:jaxb-api:2.3.0') // java.lang.NoClassDefFoundError on JAVA 9 fix
+
+    runtime('org.postgresql:postgresql')
 
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.junit.jupiter:junit-jupiter-api:${junitVersion}")

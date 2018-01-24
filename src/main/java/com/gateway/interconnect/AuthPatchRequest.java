@@ -8,14 +8,13 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthPostRequest extends AuthRequest {
-
+public class AuthPatchRequest extends AuthRequest {
     private final String body;
 
-    private AuthPostRequest(AuthRequest.Credentials credentials,
-                             String url,
-                             Map<String, Object> query,
-                             String body) {
+    private AuthPatchRequest(AuthRequest.Credentials credentials,
+                            String url,
+                            Map<String, Object> query,
+                            String body) {
         super(credentials, url, query);
         this.body = body;
     }
@@ -24,7 +23,7 @@ public class AuthPostRequest extends AuthRequest {
     public HttpResponse<JsonNode> send() throws UnirestException {
         Map<String, String> headers = tokenHeader;
         headers.put("Content-Type", "application/json");
-        HttpResponse<JsonNode> jsonResponse = Unirest.post(this.url)
+        HttpResponse<JsonNode> jsonResponse = Unirest.patch(this.url)
                 .headers(headers)
                 .queryString(query != null ? query : new HashMap<>())
                 .body(body != null ? body : "")
@@ -32,7 +31,7 @@ public class AuthPostRequest extends AuthRequest {
         if (jsonResponse.getStatus() == 401) {
             headers.remove("Auth-Token");
             headers.putAll(credentials.getBasicAuthHeader());
-            HttpResponse<JsonNode> jsonAuthResponse = Unirest.post(this.url)
+            HttpResponse<JsonNode> jsonAuthResponse = Unirest.patch(this.url)
                     .headers(headers)
                     .queryString(query != null ? query : new HashMap<>())
                     .body(body != null ? body : "")
@@ -51,8 +50,8 @@ public class AuthPostRequest extends AuthRequest {
             super();
         }
 
-        public static AuthPostRequest.Builder request() {
-            return new AuthPostRequest.Builder();
+        public static Builder request() {
+            return new Builder();
         }
 
         public AuthRequest.Builder setBody(String body) {
@@ -60,8 +59,8 @@ public class AuthPostRequest extends AuthRequest {
             return this;
         }
 
-        public AuthPostRequest build() {
-            return new AuthPostRequest(this.credentials, this.url, this.query, this.body);
+        public AuthPatchRequest build() {
+            return new AuthPatchRequest(this.credentials, this.url, this.query, this.body);
         }
     }
 }
