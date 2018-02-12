@@ -15,6 +15,7 @@ public class CreateClientResponse {
 
     private String email;
     private String phoneNumber;
+    private String username;
 
 
     private Long id;
@@ -37,6 +38,9 @@ public class CreateClientResponse {
     }
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+    public String getUsername() {
+        return username;
     }
 
     public Long getId() {
@@ -68,6 +72,7 @@ public class CreateClientResponse {
 
         this.email = profileResponse.getEmail();
         this.phoneNumber = profileResponse.getPhoneNumber();
+        this.username = profileResponse.getUsername();
 
         this.id = extendedProfileResponse.getId();
         this.profileId = extendedProfileResponse.getProfileId();

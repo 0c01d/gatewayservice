@@ -36,14 +36,13 @@ public class ExtendedProfileResponse {
         return profileId;
     }
 
-    public ExtendedProfileResponse(@JsonProperty("id") Long id,
-                                   @JsonProperty("firstname") String firstname,
+    public ExtendedProfileResponse(@JsonProperty("firstname") String firstname,
                                    @JsonProperty("middlename") String middlename,
                                    @JsonProperty("lastname") String lastname,
                                    @JsonProperty("gender") String gender,
                                    @JsonProperty("dateOfBirth") String dateOfBirth,
                                    @JsonProperty("profileId") Long profileId){
-        this.id = id;
+
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;

@@ -12,6 +12,7 @@ public class CreateClientRequest {
     private String email;
     private String phoneNumber;
     private UUID walletUUID;
+    private String username;
 
     private String firstname;
     private String middlename;
@@ -25,6 +26,9 @@ public class CreateClientRequest {
     }
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+    public String getUsername() {
+        return username;
     }
     public String getFirstname() {
         return firstname;
@@ -41,11 +45,9 @@ public class CreateClientRequest {
     public String getDateOfBirth() {
         return dateOfBirth;
     }
-
     public Long getProfileId() {
         return profileId;
     }
-
     public UUID getWalletUUID() {
         return walletUUID;
     }
@@ -55,6 +57,8 @@ public class CreateClientRequest {
     public CreateClientRequest(ProfileRequest profileRequest, ExtendedProfileRequest extendedProfileRequest, ProfileResponse profileResponse, WalletResponse walletResponse) {
         this.email = profileRequest.getEmail();
         this.phoneNumber = profileRequest.getPhoneNumber();
+        this.username = profileRequest.getUsername();
+
         this.firstname = extendedProfileRequest.getFirstname();
         this.middlename = extendedProfileRequest.getMiddlename();
         this.lastname = extendedProfileRequest.getLastname();

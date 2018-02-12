@@ -11,6 +11,7 @@ public class ProfileResponse {
     private String email;
     private String phoneNumber;
     private UUID walletUUID;
+    private String username;
 
     public Long getId() {
         return id;
@@ -24,13 +25,18 @@ public class ProfileResponse {
     public UUID getWalletUUID() {
         return walletUUID;
     }
+    public String getUsername() {
+        return username;
+    }
 
     public ProfileResponse(@JsonProperty("email") String email,
                            @JsonProperty("phoneNumber") String phoneNumber,
-                           @JsonProperty("walletUUID") UUID walletUUID) {
+                           @JsonProperty("walletUUID") UUID walletUUID,
+                           @JsonProperty("username") String username) {
 
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.walletUUID = walletUUID;
+        this.username = username;
     }
 }

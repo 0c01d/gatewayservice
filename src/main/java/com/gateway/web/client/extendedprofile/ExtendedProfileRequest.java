@@ -46,6 +46,8 @@ public class ExtendedProfileRequest {
         this.profileId = profileId;
     }*/
 
+    public ExtendedProfileRequest() {}
+
     public ExtendedProfileRequest(CreateClientRequest createClientRequest, ProfileResponse profileResponse){
         this.firstname = createClientRequest.getFirstname();
         this.middlename = createClientRequest.getMiddlename();
